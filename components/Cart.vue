@@ -238,6 +238,10 @@ export default {
     align-items: center;
     justify-content: space-between;
     border-top: 1px solid #e8e8e8;
+
+    @media all and (max-width: 480px) {
+      margin-bottom: 30px;
+    }
   }
 
   &__registration {
