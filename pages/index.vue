@@ -229,6 +229,7 @@ export default {
         .movie-img {
           position: relative;
           overflow: hidden;
+          flex: 1 1 auto;
 
           &:hover {
             .overview {
@@ -240,6 +241,7 @@ export default {
             display: block;
             width: 100%;
             height: 100%;
+            object-fit: cover;
           }
 
           .review {
