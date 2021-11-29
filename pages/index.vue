@@ -1,34 +1,34 @@
 <template>
-  <div class="home">
+  <div class='home'>
     <!-- Hero -->
     <Hero has-button />
 
     <div class='cart__button' @click='toggleCart'></div>
 
     <!-- Movies -->
-    <div class="container movies">
+    <div class='container movies'>
 
       <!-- Now Streaming  -->
-      <div id="movie-grid" class="movies-grid">
+      <div id='movie-grid' class='movies-grid'>
         <div
           v-for='item in goods'
           :key='item.id'
-          class="movie"
+          class='movie'
         >
-          <div class="movie-img">
+          <div class='movie-img'>
             <img
-              :src='defaultImage'
-              alt="elf bar"
+              :src='item.image || defaultImage'
+              alt='elf bar'
             />
-            <p class="review">{{item.price}} грн</p>
-            <p class="overview">{{ item.description }}</p>
+            <p class='review'>{{ item.price }} грн</p>
+            <p class='overview'>{{ item.description }}</p>
           </div>
-          <div class="info">
-            <p class="title">
-              {{item.title}}
+          <div class='info'>
+            <p class='title'>
+              {{ item.title }}
             </p>
 
-            <div class="button button-light" @click='addToCart(item)'>В корзину</div>
+            <div class='button button-light' @click='addToCart(item)'>В корзину</div>
           </div>
         </div>
       </div>
@@ -42,6 +42,7 @@
       @minusCount='minusCount'
       @plusCount='plusCount'
       class='cart'
+      ref='cart'
     />
   </div>
 </template>
@@ -56,31 +57,38 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: 'Get all the latest streaming movies in theaters & online',
+          content: 'Get all the latest streaming movies in theaters & online'
         },
         {
           hid: 'keywords',
           name: 'keywords',
-          content: 'movies, stream, stremaing',
-        },
-      ],
+          content: 'movies, stream, stremaing'
+        }
+      ]
     }
   },
-
+  async asyncData({ $api }) {
+    return {
+      goods: await $api.fb.read('goods')
+    }
+  },
   data() {
     return {
       isCartOpen: false,
       cart: [],
-      goods: [
-        { id: '1', price: 300, count: 1, title: 'Одноразовая pod-система Elf Bar 2000 Disposable', taste: 'Арбуз Лимон', image: '~assets/imgs/elf.jpg', type: 'Elf Bar 2000', description: 'Elf bar 2000 - это одноразовая pod система предварительно заправленная жидкостью. Устройство состоит из аккумулятора емкостью 1200 мАч на 2000 затяжек  и предварительно заправленного картриджа объемом 6,5 мл, никотин солевой, крепость составляет SE2% (50 мг/мл). Активируется устройство по затяжке, а светодиод снизу сообщит о том, что под-система работает.' }
-      ]
+      goods: []
     }
   },
   methods: {
     watchClickToCloseCart(e) {
-      console.log((!e.target.classList.contains('cart') || e.target.classList.contains('cart__button')))
+      const target = e.target
+      const cart = document.querySelector('.cart')
+      const button = document.querySelector('.cart__button')
 
-      if (e.target.classList.contains('cart') || e.target.classList.contains('cart__button')) {
+      const is__button = target === button
+      const is__cart = e.srcElement?.offsetParent?.classList?.contains('cart') || e.target?.classList?.contains('cart__remove-button')
+
+      if (is__button || is__cart) {
         return
       }
 
@@ -144,7 +152,7 @@ export default {
     if (localStorage.getItem('cart')) {
       try {
         this.cart = JSON.parse(localStorage.getItem('cart')) || []
-      } catch(e) {
+      } catch (e) {
         localStorage.removeItem('cart')
       }
     }
@@ -154,7 +162,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang='scss'>
 .cart__button {
   width: 64px;
   height: 64px;
@@ -196,6 +204,7 @@ export default {
 
   .movies {
     padding: 32px 16px;
+
     .movies-grid {
       display: grid;
       column-gap: 32px;
@@ -246,7 +255,7 @@ export default {
             color: #fff;
             border-radius: 0 0 16px 0;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            0 2px 4px -1px rgba(0, 0, 0, 0.06);
           }
 
           .overview {
@@ -266,6 +275,7 @@ export default {
           padding: 10px 20px;
 
           margin-top: auto;
+
           .title {
             margin-top: 8px;
             color: #fff;

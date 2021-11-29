@@ -14,24 +14,47 @@
             <div class='ordering__item-title'>Покупатель</div>
 
             <div class='ordering__item-content'>
-              <div class='ordering__form-item ordering__form-item_fullName'>
+              <div
+                class='ordering__form-item ordering__form-item_fullName'
+                :class="{ 'ordering__error': invalid }"
+              >
                 <label>
                   ФИО
-                  <input v-model='fullName' type='text' placeholder='Ваше ФИО'>
+                  <input
+                    v-model='fullName'
+                    type='text'
+                    placeholder='Ваше ФИО'
+                    :disabled='isLoading'
+                  >
                 </label>
               </div>
 
-              <div class='ordering__form-item ordering__form-item_email'>
+              <div
+                class='ordering__form-item ordering__form-item_email'
+              >
                 <label>
                   Email
-                  <input v-model='email' type='email' placeholder='Ваш Email'>
+                  <input
+                    v-model='email'
+                    type='email'
+                    placeholder='Ваш Email'
+                    :disabled='isLoading'
+                  >
                 </label>
               </div>
 
-              <div class='ordering__form-item ordering__form-item_tel'>
+              <div
+                class='ordering__form-item ordering__form-item_tel'
+                :class="{ 'ordering__error': invalid }"
+              >
                 <label>
                   Телефон
-                  <input v-model='tel' type='tel' placeholder='Ваш телефон'>
+                  <input
+                    v-model='tel'
+                    type='tel'
+                    placeholder='Ваш телефон'
+                    :disabled='isLoading'
+                  >
                 </label>
               </div>
             </div>
@@ -41,11 +64,21 @@
             <div class='ordering__item-title'>Доставка в отделение Новой Почты</div>
 
             <div class='ordering__item-content ordering__item-content_novaposhta'>
-              <div class='ordering__item-content-city'>
+              <div
+                class='ordering__item-content-city'
+                :class="{ 'ordering__error': invalid }"
+              >
                 <label>
                   *Город
-                  <input v-model='citySearch' placeholder='Ваш город' type='text' class='ordering__search'
-                         @focus='isCitySearchOpen = true' @input='getCities'>
+                  <input
+                    v-model='citySearch'
+                    placeholder='Ваш город'
+                    type='text'
+                    class='ordering__search'
+                    :disabled='isLoading'
+                    @focus='isCitySearchOpen = true'
+                    @input='getCities'
+                  >
                 </label>
                 <div v-show='isCitySearchOpen && cities.length' class='ordering__select'>
                   <div
@@ -59,11 +92,17 @@
                 </div>
               </div>
 
-              <div class='ordering__item-content-department'>
+              <div
+                class='ordering__item-content-department'
+                :class="{ 'ordering__error': invalid }"
+              >
                 <label>
                   *Отделение
-                  <input v-model='departmentSearch' placeholder='Выберите из списка' type='text'
+                  <input v-model='departmentSearch'
+                         placeholder='Выберите из списка'
+                         type='text'
                          class='ordering__search'
+                         :disabled='isLoading'
                          @focus='isDepartmentSearchOpen = true'>
                 </label>
                 <div v-show='isDepartmentSearchOpen && departments.length' class='ordering__select'>
@@ -83,15 +122,21 @@
           <div class='ordering__item'>
             <div class='ordering__item-title'>Внимание!</div>
 
-            <div class='ordering__item-content'>
+            <div class='ordering__item-content ordering__item-content_important'>
               <div class='ordering__important-item'>- Одноразовые сигареты не подлежат обмену и возврату! Гарантия на
                 них не распространяется от производителя!
+              </div>
+              <div class='ordering__important-item'>- После заказа вам прийдет сообщение с реквизитами для оплаты, не забудьте указать имя и фамилию.
               </div>
             </div>
           </div>
 
-          <textarea v-model='comment' placeholder='Комментарий к заказу или пожелание'
-                    class='ordering__comment'></textarea>
+          <textarea
+            v-model='comment'
+            placeholder='Комментарий к заказу или пожелание'
+            class='ordering__comment'
+            :disabled='isLoading'
+          ></textarea>
         </div>
 
         <div class='ordering__cart'>
@@ -117,16 +162,24 @@
           </div>
         </div>
       </div>
-      <button class='ordering__button'>Оформить заказ</button>
+      <button
+        :disabled='isLoading'
+        class='ordering__button'
+        @click='toOrder'
+        >Оформить заказ</button>
     </div>
+
+    <Modal :is-open='isModalOpen' />
   </div>
 </template>
 
 <script>
+import { required } from 'vuelidate/lib/validators'
 import Hero from '~/components/Hero'
+import Modal from '~/components/Modal'
 
 export default {
-  components: { Hero },
+  components: { Modal, Hero },
   data() {
     return {
       cart: [],
@@ -141,11 +194,30 @@ export default {
       department: '',
       departmentSearch: '',
       isDepartmentSearchOpen: false,
+      id: '',
+      isLoading: false,
+      isModalOpen: false,
 
       cities: [],
       departments: []
     }
   },
+
+  validations: {
+    fullName: {
+      required
+    },
+    tel: {
+      required
+    },
+    city: {
+      required
+    },
+    department: {
+      required
+    },
+  },
+
   mounted() {
     if (localStorage.getItem('cart')) {
       try {
@@ -169,6 +241,9 @@ export default {
       }
 
       return sum
+    },
+    invalid() {
+      return (this.$v.$dirty && this.$v.$invalid)
     }
   },
   watch: {
@@ -188,6 +263,42 @@ export default {
     }
   },
   methods: {
+    async toOrder() {
+      await this.$v.$touch()
+
+      if (this.$v.$invalid) {
+        const el = document.querySelector(".ordering__error")
+        el.scrollIntoView()
+        return
+      }
+
+      try {
+        this.isLoading = true
+
+        await this.$api.fb.set('orders', {
+          cart: this.cart,
+          fullName: this.fullName,
+          email: this.email,
+          tel: this.tel,
+          comment: this.comment,
+          city: this.city,
+          region: this.region,
+          department: this.department,
+        })
+
+        localStorage.removeItem('cart')
+
+        this.isLoading = false
+
+        this.isModalOpen = true
+
+        setTimeout(() => { this.isModalOpen = false }, 1300)
+        await this.$router.push('/')
+      } catch (err) {
+        this.isLoading = false
+        await this.$router.push('/error')
+      }
+    },
     async getCities() {
       this.cities = await this.$api.novaposhta.findCity(this.citySearch)
 
@@ -230,6 +341,17 @@ export default {
 
 .ordering {
   background: #fff;
+
+  &__error {
+
+    label {
+      color: red;
+    }
+
+    input {
+      border: 1px solid red !important;
+    }
+  }
 
   &__to-home {
     font-size: 36px;
@@ -287,6 +409,11 @@ export default {
 
     @media all and (max-width: 680px) {
       flex-wrap: wrap;
+    }
+
+    &_important {
+      justify-content: flex-start;
+      flex-direction: column;
     }
 
     &_novaposhta {
@@ -391,6 +518,11 @@ export default {
 
     &:hover {
       background: orange;
+    }
+
+    &:disabled {
+      background: gray;
+      cursor: not-allowed;
     }
   }
 

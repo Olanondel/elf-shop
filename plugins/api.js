@@ -1,13 +1,12 @@
 import Novaposhta from '~/api/novaposhta'
-import firebase from 'firebase/compat'
+import Firebase from '~/api/firebase'
 
 export default (context, inject) => {
   // Initialize API factories
   const factories = {
-    novaposhta: Novaposhta(context)
+    novaposhta: Novaposhta(context),
+    fb: Firebase(context)
   };
-
-  console.log(context)
 
   // Inject $api
   inject("api", factories);

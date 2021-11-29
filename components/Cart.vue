@@ -48,7 +48,7 @@
       <div class='cart__price'>
         Всего: {{fullPrice}} грн.
       </div>
-      <div class='cart__registration' @click='toOrder'>Оформление заказа</div>
+      <div class='cart__registration' :class="{ cart__disabled: !items.length }" @click='toOrder'>Оформление заказа</div>
     </div>
   </div>
 </template>
@@ -85,8 +85,6 @@ export default {
     toOrder() {
       if (this.items.length) {
         this.$router.push('/ordering')
-      } else {
-        alert('Корзина пуста!')
       }
     },
     toggleCart() {
@@ -102,9 +100,6 @@ export default {
       this.$emit('plusCount', id)
     }
   },
-  changeCount(payload) {
-    this.$emit('changeCount', payload)
-  }
 }
 </script>
 
@@ -253,6 +248,11 @@ export default {
     padding: 10px 15px;
     cursor: pointer;
     text-decoration: none;
+  }
+
+  &__disabled {
+    background: gray;
+    cursor: not-allowed;
   }
 }
 </style>
