@@ -57,12 +57,12 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: 'Get all the latest streaming movies in theaters & online'
+          content: 'Одноразовая электронная сигарета Elf Bar 1500 (850 mAh) Disposable Pod: это новое одноразовое устройство которое преподноситься как альтернатива курению сигарет, IQOS и прочих табако содержащих аналогов. Устройство изготовлено лучшими инженерами которые сумели поместить аккумулятор емкостью в целых 850 mah и резервуар с жидкостью в 4,8 мл в такую миниатюрную конструкцию.'
         },
         {
           hid: 'keywords',
           name: 'keywords',
-          content: 'movies, stream, stremaing'
+          content: 'elf bar, elf bar 1500, elf bar 800, elf bar 2000,pod, vape, elf, bar, ельф бар, ельф бар 1500, ельф бар 800, ельф бар 2000, вейп, под, девайс'
         }
       ]
     }
