@@ -265,7 +265,7 @@ export default {
           overflow: hidden;
           flex: 1 0 auto;
           max-height: 300px;
-          height: 100%;
+          height: 300px;
 
           &:hover {
             .overview {
