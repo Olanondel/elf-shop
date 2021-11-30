@@ -263,7 +263,9 @@ export default {
         .movie-img {
           position: relative;
           overflow: hidden;
-          flex: 1 1 auto;
+          flex: 1 0 auto;
+          max-height: 300px;
+          height: 100%;
 
           &:hover {
             .overview {
