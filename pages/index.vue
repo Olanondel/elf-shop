@@ -18,7 +18,7 @@
           <div class='movie-img'>
             <img
               :src='item.image || defaultImage'
-              alt='elf bar'
+              :alt='item.description'
             />
             <p class='review'>{{ item.price }} грн</p>
             <p class='overview'>{{ item.description }}</p>
