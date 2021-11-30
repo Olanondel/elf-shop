@@ -240,7 +240,7 @@ export default {
     border-top: 1px solid #e8e8e8;
 
     @media all and (max-width: 480px) {
-      margin-bottom: 30px;
+      margin-bottom: 65px;
     }
   }
 

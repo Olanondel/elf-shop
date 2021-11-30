@@ -148,7 +148,7 @@
             :key='item.id'
             class='ordering__cart-item'
           >
-            <img :src='defaultImage' alt='elf' class='ordering__cart-image'>
+            <img :src='item.image || defaultImage' alt='elf' class='ordering__cart-image'>
 
             <div class='ordering__cart-titles'>
               <nuxt-link to='' class='ordering__cart-link'>{{ item.title }}</nuxt-link>
@@ -220,13 +220,8 @@ export default {
   },
 
   mounted() {
-    if (localStorage.getItem('cart')) {
-      try {
-        this.cart = JSON.parse(localStorage.getItem('cart')) || []
-      } catch (e) {
-        localStorage.removeItem('cart')
-      }
-    }
+    this.getCartFromLocalStorage()
+    document.body.style.overflow = 'visible'
   },
   computed: {
     defaultImage() {
@@ -264,6 +259,15 @@ export default {
     }
   },
   methods: {
+    async getCartFromLocalStorage() {
+      if (localStorage.getItem('cart')) {
+        try {
+          this.cart = JSON.parse(localStorage.getItem('cart')) || []
+        } catch (e) {
+          localStorage.removeItem('cart')
+        }
+      }
+    },
     async toOrder() {
       await this.$v.$touch()
 
@@ -529,7 +533,7 @@ export default {
   }
 
   &__cart {
-    flex: 1 1 30%;
+    flex: 1 0 30%;
     border: 1px solid #e8e8e8;
     max-height: 700px;
     overflow: auto;

@@ -40,8 +40,16 @@
 </template>
 
 <script>
+
+
 export default {
   name: 'index',
+  middleware({ store, redirect }) {
+    // If the user is not authenticated
+    if (!store.state.isAdmin) {
+      return redirect('/')
+    }
+  },
   data() {
     return {
       price: 0,
@@ -55,6 +63,9 @@ export default {
       preview: '',
       id: '',
     }
+  },
+  computed: {
+
   },
   methods: {
     setImage() {

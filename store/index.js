@@ -7,3 +7,8 @@ export const mutations = {
     state.isAdmin = payload
   }
 }
+
+export const getters = {
+  isAdmin: (state) => state.isAdmin
+}
+
