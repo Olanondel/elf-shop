@@ -184,10 +184,12 @@ export default {
       return require('~/assets/imgs/elf-bar-default.png')
     }
   },
+  async beforeMount() {
+    await this.getAgeFromLocalStorage()
+    await this.checkAge()
+  },
   mounted() {
     this.getCartFromLocalStorage()
-    this.getAgeFromLocalStorage()
-    this.checkAge()
   },
   beforeDestroy() {
   }
