@@ -450,6 +450,10 @@ export default {
     &-city, &-department {
       position: relative;
       flex: 0 0 46%;
+
+      @media all and (max-width: 680px) {
+        flex: 0 0 100%;
+      }
     }
   }
 

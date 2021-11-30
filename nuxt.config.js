@@ -29,6 +29,7 @@ export default {
     { src: '~plugins/firebase', ssr: false },
     { src: '~plugins/fireauth' },
     { src: '~plugins/vuelidate' },
+    { src: '~plugins/touch-events' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

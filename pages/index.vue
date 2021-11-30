@@ -1,5 +1,5 @@
 <template>
-  <div class='home'>
+  <div class='home' v-touch:swipe-left='toggleCart'>
     <!-- Hero -->
     <Hero has-button />
 

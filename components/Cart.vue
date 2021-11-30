@@ -14,7 +14,7 @@
         <div class='cart__rows'>
           <div class='cart__row'>
             <div class='cart__image'>
-              <img :src='defaultImage' alt='elf bar'>
+              <img :src='item.image || defaultImage' alt='elf bar'>
             </div>
 
             <div class='cart__info'>
@@ -183,6 +183,7 @@ export default {
   &__item-price {
     width: 60px;
     text-align: center;
+    white-space: nowrap;
   }
 
   &__item-count-control {
