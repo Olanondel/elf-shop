@@ -294,6 +294,7 @@ export default {
           city: this.city,
           region: this.region,
           department: this.department,
+          fullPrice: this.fullPrice
         })
 
         localStorage.removeItem('cart')
