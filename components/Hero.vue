@@ -3,7 +3,7 @@
     <img src="../assets/imgs/movieHero-1.jpg" alt="" />
     <div class="text-container">
       <div class="text">
-        <h1 title='Дополни свой стиль крутым Ельф Баром'>Дополни <span>свой стиль</span> крутым Elf Bar-ом!</h1>
+        <h1 title='Дополни свой стиль крутым Ельф Баром'>Дополни свой стиль <span>крутым Elf Bar-ом!</span></h1>
         <a v-if='hasButton' href="#movie-grid" class="button">Выбрать Elf Bar</a>
       </div>
     </div>

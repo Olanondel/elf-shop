@@ -44,12 +44,19 @@
       class='cart'
       ref='cart'
     />
+
+    <CheckAgeModal
+      v-if='isAgeModal'
+      @setAge='setAge'
+    />
   </div>
 </template>
 
 <script>
+import CheckAgeModal from '~/components/CheckAgeModal'
 export default {
   name: 'home',
+  components: { CheckAgeModal },
   head() {
     return {
       title: 'Elf Bar Shop',
@@ -76,10 +83,16 @@ export default {
     return {
       isCartOpen: false,
       cart: [],
-      goods: []
+      goods: [],
+      age: null,
+      isAgeModal: false,
     }
   },
   methods: {
+    setAge() {
+      this.age = true
+      this.isAgeModal = false
+    },
     watchClickToCloseCart(e) {
       const target = e.target
       const cart = document.querySelector('.cart')
@@ -141,6 +154,29 @@ export default {
       this.cart[index].count = ++this.cart[index].count
 
       this.addToLocalStorage(this.cart)
+    },
+    async getCartFromLocalStorage() {
+      if (localStorage.getItem('cart')) {
+        try {
+          this.cart = JSON.parse(localStorage.getItem('cart')) || []
+        } catch (e) {
+          localStorage.removeItem('cart')
+        }
+      }
+    },
+    getAgeFromLocalStorage() {
+      if (localStorage.getItem('older18')) {
+        try {
+          this.age = localStorage.getItem('older18')
+        } catch (e) {
+          localStorage.removeItem('older18')
+        }
+      }
+    },
+    checkAge() {
+      if (!this.age) {
+        this.isAgeModal = true
+      }
     }
   },
   computed: {
@@ -149,13 +185,9 @@ export default {
     }
   },
   mounted() {
-    if (localStorage.getItem('cart')) {
-      try {
-        this.cart = JSON.parse(localStorage.getItem('cart')) || []
-      } catch (e) {
-        localStorage.removeItem('cart')
-      }
-    }
+    this.getCartFromLocalStorage()
+    this.getAgeFromLocalStorage()
+    this.checkAge()
   },
   beforeDestroy() {
   }
