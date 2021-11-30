@@ -181,6 +181,11 @@ import Modal from '~/components/Modal'
 
 export default {
   components: { Modal, Hero },
+  head() {
+    return {
+      title: 'Elf Market || Ordering',
+    }
+  },
   data() {
     return {
       cart: [],

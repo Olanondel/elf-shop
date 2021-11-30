@@ -4,7 +4,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Elf Bar Shop',
+    title: 'Elf Market',
     htmlAttrs: {
       lang: 'en',
     },

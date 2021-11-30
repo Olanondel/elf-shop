@@ -59,7 +59,7 @@ export default {
   components: { CheckAgeModal },
   head() {
     return {
-      title: 'Elf Bar Shop',
+      title: 'Elf Market || Home',
       meta: [
         {
           hid: 'description',
