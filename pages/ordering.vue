@@ -302,7 +302,7 @@ export default {
 
         this.isModalOpen = true
 
-        setTimeout(() => { this.isModalOpen = false }, 1300)
+        setTimeout(() => { this.isModalOpen = false }, 3000)
         await this.$router.push('/')
       } catch (err) {
         this.isLoading = false
