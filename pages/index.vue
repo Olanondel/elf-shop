@@ -34,7 +34,7 @@
       </div>
     </div>
 
-    <Cart
+    <LazyCart
       :items='cart'
       :open='isCartOpen'
       @toggleCart='toggleCart'
@@ -45,7 +45,7 @@
       ref='cart'
     />
 
-    <CheckAgeModal
+    <LazyCheckAgeModal
       v-if='isAgeModal'
       @setAge='setAge'
     />
