@@ -74,7 +74,7 @@ export default {
 
       if (this.items?.length) {
         this.items.forEach(el => {
-          sum = el.price * el.count
+          sum += el.price * el.count
         })
       }
 
