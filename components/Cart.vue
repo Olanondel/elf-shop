@@ -136,6 +136,7 @@ export default {
     cursor: pointer;
     height: 64px;
     flex: 0 0 64px;
+    border: 1px solid #e8e8e8;
     background: transparent url("~assets/imgs/next.png") no-repeat center;
   }
 
@@ -228,7 +229,8 @@ export default {
 
     img {
       max-width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
     }
   }
 
