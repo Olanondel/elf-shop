@@ -237,7 +237,7 @@ export default {
 
       if (this.cart?.length) {
         this.cart.forEach(el => {
-          sum = el.price * el.count
+          sum += el.price * el.count
         })
       }
 
