@@ -1,20 +1,20 @@
 <template>
   <table>
     <tr>
-      <th>title</th>
-      <th>description</th>
-      <th>image</th>
-      <th>price</th>
-      <th>edit</th>
+      <th>Клиент</th>
+      <th>Номер телефона</th>
+      <th>Коментарий к заказу</th>
+      <th>Итоговая стоимость.</th>
+      <th>Подробнее</th>
     </tr>
     <tr
       v-for='item in goods'
       :key='item.id'
     >
-      <td>{{item.title}}</td>
-      <td>{{item.description}}</td>
-      <td class='image'><img :src='item.image' alt=''> </td>
-      <td>{{item.price}}</td>
+      <td>{{item.fullName}}</td>
+      <td>{{item.tel}}</td>
+      <td>{{item.comment}}</td>
+      <td>{{item.fullPrice}}</td>
       <td><router-link append :to="item.id">Подробнее</router-link></td>
     </tr>
   </table>
@@ -23,10 +23,10 @@
 <script>
 export default {
   name: 'index',
-  async asyncData({ $api }) {
-    return { goods: await $api.fb.read('goods') }
-  },
   middleware: 'check-admin.client',
+  async asyncData({ $api }) {
+    return { goods: await $api.fb.read('orders') }
+  },
   data() {
     return {
       goods: []
@@ -63,10 +63,5 @@ tr:nth-child(odd) {
 }
 tr:nth-child(even) {
   background: #E8E6D1;
-}
-.image img {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
 }
 </style>

@@ -107,7 +107,7 @@
                 </label>
                 <div v-show='isDepartmentSearchOpen && departments.length' class='ordering__select'>
                   <div
-                    v-for='(item, index) in departments'
+                    v-for='(item, index) in filteredDepartments'
                     :key='item.DescriptionRu'
                     class='ordering__select-item'
                     @click='setDepartment(item.DescriptionRu)'
@@ -126,8 +126,12 @@
               <div class='ordering__important-item'>- Одноразовые сигареты не подлежат обмену и возврату! Гарантия на
                 них не распространяется от производителя!
               </div>
-              <div class='ordering__important-item'>- Количество затяжек, указанное производителем, является приблизительным. В зависимости от стиля парения этот параметр у разных пользователей может существенно отличаться.</div>
-              <div class='ordering__important-item'>- После заказа вам прийдет сообщение с реквизитами для оплаты, не забудьте указать имя и фамилию.
+              <div class='ordering__important-item'>- Количество затяжек, указанное производителем, является
+                приблизительным. В зависимости от стиля парения этот параметр у разных пользователей может существенно
+                отличаться.
+              </div>
+              <div class='ordering__important-item'>- После заказа вам прийдет сообщение с реквизитами для оплаты, не
+                забудьте указать имя и фамилию.
               </div>
             </div>
           </div>
@@ -167,7 +171,8 @@
         :disabled='isLoading'
         class='ordering__button'
         @click='toOrder'
-        >Оформить заказ</button>
+      >Оформить заказ
+      </button>
     </div>
 
     <Modal :is-open='isModalOpen' />
@@ -183,7 +188,7 @@ export default {
   components: { Modal, Hero },
   head() {
     return {
-      title: 'Elf Market || Ordering',
+      title: 'Elf Market || Ordering'
     }
   },
   data() {
@@ -221,7 +226,7 @@ export default {
     },
     department: {
       required
-    },
+    }
   },
 
   mounted() {
@@ -229,6 +234,9 @@ export default {
     document.body.style.overflow = 'visible'
   },
   computed: {
+    filteredDepartments() {
+      return !this.departmentSearch?.length ? this.departments : this.departments.filter(el => el.DescriptionRu.includes(this.departmentSearch))
+    },
     defaultImage() {
       return require('~/assets/imgs/elf-bar-default.png')
     },
@@ -277,7 +285,7 @@ export default {
       await this.$v.$touch()
 
       if (this.$v.$invalid) {
-        const el = document.querySelector(".ordering__error")
+        const el = document.querySelector('.ordering__error')
         el.scrollIntoView()
         return
       }
@@ -303,8 +311,10 @@ export default {
 
         this.isModalOpen = true
 
-        setTimeout(() => { this.isModalOpen = false }, 3000)
-        await this.$router.push('/')
+        setTimeout(() => {
+          this.isModalOpen = false
+          this.$router.push('/')
+        }, 3000)
       } catch (err) {
         this.isLoading = false
         await this.$router.push('/error')
