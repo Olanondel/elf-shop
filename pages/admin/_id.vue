@@ -35,7 +35,6 @@
       <div class='item'>
         <button v-if='!id' @click='setItem'>Добавить</button>
         <button v-else @click='updateItem'>Сохранить</button>
-        <button @click='removeItem'>Удалить</button>
       </div>
     </div>
   </div>
@@ -66,6 +65,7 @@ export default {
       imageFile: null,
       preview: '',
       id: '',
+      imageFileName: '',
     }
   },
   computed: {
@@ -105,8 +105,7 @@ export default {
     },
     async updateItem() {
       try {
-
-        this.image = await this.$api.fb.uploadImage('goods', id, this.imageFile, this.imageFile.name )
+        this.image = await this.$api.fb.uploadImage('goods', this.id, this.imageFile, this.imageFile.name )
 
         await this.$api.fb.update('goods', {
           price: this.price,
@@ -116,7 +115,8 @@ export default {
           description: this.description,
           count: 1,
           image: this.image,
-          id: this.id
+          id: this.id,
+          imageFileName: this.imageFile.name
         })
 
         alert('success')
