@@ -23,7 +23,7 @@
 <script>
 export default {
   name: 'index',
-  middleware: 'check-admin.client',
+  // middleware: 'check-admin.client',
   async asyncData({ $api }) {
     return { goods: await $api.fb.read('orders') }
   },

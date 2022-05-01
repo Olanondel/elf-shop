@@ -45,7 +45,7 @@
 
 export default {
   name: '_id',
-  middleware: 'check-admin.client',
+  // middleware: 'check-admin.client',
   async asyncData({ params, $api }) {
     if (params.id !== 'add') {
       return {

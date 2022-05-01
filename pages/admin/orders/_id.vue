@@ -29,7 +29,7 @@
 <script>
 export default {
   name: '_id',
-  middleware: 'check-admin.client',
+  // middleware: 'check-admin.client',
   async asyncData({ $api, params }) {
     return { ...await $api.fb.readOne('orders', params.id) }
   },

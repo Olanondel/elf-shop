@@ -28,13 +28,20 @@
               {{ item.title }}
             </p>
 
-            <div class='button button-light' @click='addToCart(item)'>В корзину</div>
+            <div class="buttons">
+              <div class='button button-light' :class="{ 'button--disabled': cart.includes(item) }" @click='addToCart(item)'>В корзину</div>
+
+              <div v-if="cart.includes(item)" class="buttons__control">
+                <div class='button button-light' @click="minusCount(item.id)">-</div>
+                <div class='button button-light' @click="plusCount(item.id)">+</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <LazyCart
+    <Cart
       :items='cart'
       :open='isCartOpen'
       @toggleCart='toggleCart'
@@ -45,7 +52,7 @@
       ref='cart'
     />
 
-    <LazyCheckAgeModal
+    <CheckAgeModal
       v-if='isAgeModal'
       @setAge='setAge'
     />
@@ -142,9 +149,13 @@ export default {
       localStorage.setItem('cart', parsed)
     },
     minusCount(id) {
-      const index = this.cart.findIndex(el => el.id === id)
+      const index = this.cart.findIndex(el => el.id === id);
 
-      this.cart[index].count = --this.cart[index].count
+      if (this.cart[index].count > 1) {
+        this.cart[index].count -= 1;
+      } else {
+        this.removeItem(id)
+      }
 
       this.addToLocalStorage(this.cart)
     },
@@ -201,11 +212,18 @@ export default {
   width: 64px;
   height: 64px;
   background: transparent url("~assets/imgs/carts.png") no-repeat center;
-  position: absolute;
-  top: 20px;
-  right: 20px;
+  position: fixed;
+  top: 30px;
+  right: 30px;
   z-index: 999;
   cursor: pointer;
+
+  animation: 2s ease infinite cart;
+}
+
+@keyframes cart {
+  50% { transform: scale(1.2) }
+  100% { transform: scale(1) }
 }
 
 .home {
@@ -325,8 +343,10 @@ export default {
             color: #c9c9c9;
           }
 
-          .button {
-            margin-top: 8px;
+          .buttons {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
           }
 
           .elf-buttons {
