@@ -6,13 +6,13 @@ import { getStorage } from "firebase/storage";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAluC8hdPdZeUUQ_2_n_JVPZ3nEQlW-lJI",
-  authDomain: "elf-bar-shop.firebaseapp.com",
-  projectId: "elf-bar-shop",
-  storageBucket: "elf-bar-shop.appspot.com",
-  messagingSenderId: "730862033307",
-  appId: "1:730862033307:web:b1545f2967f9383fe2a93e",
-  measurementId: "G-YW45ZEG3JZ"
+  apiKey: process.env.NUXT_ENV_API_KEY,
+  authDomain: process.env.NUXT_ENV_AUTH_DOMAIN,
+  projectId: process.env.NUXT_ENV_PROJECT_ID,
+  storageBucket: process.env.NUXT_ENV_STORAGE_BUCKET,
+  messagingSenderId: process.env.NUXT_ENV_MESSAGING_SENDER_ID,
+  appId: process.env.NUXT_ENV_APP_ID,
+  measurementId: process.env.NUXT_ENV_MEASUREMENT_ID
 };
 
 // Initialize Firebase
